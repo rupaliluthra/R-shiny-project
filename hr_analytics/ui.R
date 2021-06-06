@@ -1,5 +1,5 @@
 dashboardPage(
-  dashboardHeader(title = "Turnover Analysis"),
+  dashboardHeader(title = "Attrition Analysis"),
   dashboardSidebar(
     sidebarMenu(
       menuItem("Introduction", tabName = "intro"),
@@ -15,13 +15,24 @@ dashboardPage(
       tabItem(tabName = "intro",
               fluidPage(
                 fluidRow(
-                  column(offset = 2, width = 8, 
+                  column(offset = 3, width = 8, 
                          h1(tags$b("Employee Attritions"))
                   )
                 ),
                 br(),
                 fluidRow(
-                  img(src = "http://thecontextofthings.com/wp-content/uploads/2017/01/employee-attrition.jpg", height = 200)
+                  column(offset = 1, width = 10, align = "center",
+                  img(src = "http://thecontextofthings.com/wp-content/uploads/2017/01/employee-attrition.jpg", height = 300)
+                )),
+                br(),
+                fluidRow(
+                  column(offset = 1, width = 10, align = "center", 
+                         box(width = 16, background = "navy", 
+                             p("There are very few people who begin and end their careers in one company.
+                             Most people move on after a time, or the company forces them to move on
+                             with an involuntary termination. People leaving organizations seems like
+                             a quite straightforward matter, but there is a lot to unpack with employee attrition.")))
+                        
                 )
               )     
       ),
@@ -34,8 +45,8 @@ dashboardPage(
                 ),
                 br(),
                 fluidRow(
-                  column(5, plotOutput("count")),
-                  column(7, plotOutput("percent"))
+                  column(6, plotOutput("count")),
+                  column(6, plotOutput("percent"))
                 )
               )
       ),
@@ -47,8 +58,20 @@ dashboardPage(
                 plotOutput("who_plot")
               )
               
-      )  
+      ),
+      tabItem(tabName = "why",
+              fluidPage(
+                fluidRow(
+                  column(12, plotOutput("job_satisfaction")),
+                  br(),
+                  column(12, plotOutput("dist_from_work")),
+                  br(),
+                  column(12, plotOutput("business_travel"))
+                  
+                )
+              )
+              ))
     )
   )
-)
+
 
