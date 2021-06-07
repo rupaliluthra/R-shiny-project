@@ -27,7 +27,7 @@ dashboardPage(
                 br(),
                 fluidRow(
                   column(offset = 1, width = 10, align = "center", 
-                         box(width = 16, background = "navy", 
+                         box(width = 16, background = "yellow", 
                              p("There are very few people who begin and end their careers in one company.
                              Most people move on after a time, or the company forces them to move on
                              with an involuntary termination. People leaving organizations seems like
@@ -66,7 +66,9 @@ dashboardPage(
                   br(),
                   column(12, plotOutput("dist_from_work")),
                   br(),
-                  column(12, plotOutput("business_travel"))
+                  column(12, plotOutput("business_travel")),
+                  br(),
+                  column(12, plotOutput("monthly_income"))
                   
                 )
               )

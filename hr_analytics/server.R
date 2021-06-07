@@ -49,9 +49,19 @@ server <- function(input, output) {
       theme_bw()+
       labs(x="Business Travel", y="Number Attriation")+
       ggtitle("Attrition and Business Travel")+
-     # geom_text(aes(label = n), vjust = -0.5, position = position_dodge(0.9))
       theme(plot.title = element_text(face = "bold", hjust = 0.5, size = 15))
   })
+  
+  output$monthly_income <- renderPlot({
+    ggplot(employee,aes(x= Attrition, y= MonthlyIncome,fill= Attrition)) +
+      theme_bw()+
+      geom_boxplot(alpha=0.3)+
+      ggtitle("Attrition and MonthlyIncome")+
+      #theme(plot.title = element_text(hjust = 0.5))+
+      theme(plot.title = element_text(face = "bold", hjust = 0.4, size = 15))+
+      geom_boxplot()
+    
+  }) 
   
   output$who_plot <- renderPlot({
     if (input$who_category == 'Gender'){
@@ -67,7 +77,7 @@ server <- function(input, output) {
       who_leaving %>%
         group_by(Department) %>% 
         summarise(count = n()) %>% 
-        ggplot(., aes(x = Department, y = count)) + 
+        ggplot(., aes(x = reorder(Department,count), y = count)) + 
         geom_bar(aes(fill = Department),stat = "identity") +
         theme_bw()+
         coord_flip()
@@ -76,7 +86,7 @@ server <- function(input, output) {
       who_leaving %>%
         group_by(JobRole) %>% 
         summarise(count = n()) %>% 
-        ggplot(., aes(x = JobRole, y = count)) + 
+        ggplot(., aes(x = reorder(JobRole,count), y = count)) + 
         geom_bar(aes(fill= JobRole),stat = "identity") +
         theme_bw()+
         coord_flip()
@@ -85,7 +95,7 @@ server <- function(input, output) {
       who_leaving %>%
         group_by(Age) %>% 
         summarise(count = n()) %>% 
-        ggplot(., aes(x = Age, y = count)) + 
+        ggplot(., aes(x = reorder(Age,count), y = count)) + 
         geom_bar(aes(fill = Age),stat = "identity") +
         theme_bw()+
         coord_flip()
@@ -94,7 +104,7 @@ server <- function(input, output) {
       who_leaving %>%
         group_by(JobLevel) %>% 
         summarise(count = n()) %>% 
-        ggplot(., aes(x = JobLevel, y = count)) + 
+        ggplot(., aes(x = reorder(JobLevel,count), y = count)) + 
         geom_bar(aes(fill = JobLevel),stat = "identity") +
         theme_bw()+
         coord_flip()
