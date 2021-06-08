@@ -27,11 +27,16 @@ dashboardPage(
                 br(),
                 fluidRow(
                   column(offset = 1, width = 10, align = "center", 
-                         box(width = 16, background = "yellow", 
+                        # box(width = 16, background = "yellow", 
                              p("There are very few people who begin and end their careers in one company.
                              Most people move on after a time, or the company forces them to move on
                              with an involuntary termination. People leaving organizations seems like
-                             a quite straightforward matter, but there is a lot to unpack with employee attrition.")))
+                             a quite straightforward matter, but there is a lot to unpack with employee attrition.
+                             according to the Work Institute, each employee departure costs a company about one-third of that
+                             worker's annual earnings, including expenses such as recruiter fees, temporary replacement workers
+                             and lost productivity. Knowing the most likely reasons why employees leave the organization,
+                             can help the organization take action and reduce the level of Attrition inside the organization."))
+
                         
                 )
               )     
@@ -73,7 +78,7 @@ dashboardPage(
                 )
               )
               ))
-    )
+      
   )
-
+)
 

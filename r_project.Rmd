@@ -1,0 +1,245 @@
+```{r}
+library(tidyverse)
+```
+
+
+```{r}
+employee = read_csv("HR_employee_attrition.csv")
+```
+
+
+```{r}
+as_tibble(employee)
+```
+
+
+
+
+
+```{r}
+names(employee)
+```
+
+
+```{r}
+employee$Age= cut(employee$Age, breaks =c(17,26,34,43,51,60),
+                   labels=c("18-26","27-34","35-43","44-51","52-60"))
+                   
+
+```
+
+
+
+```{r}
+str(employee)
+```
+
+
+
+```{r}
+# count of employees who quit
+
+employee %>% group_by (., Attrition) %>% 
+            summarise(., count=n()) %>% 
+            ggplot(.,aes(x=Attrition,y=count )) +
+            geom_bar(aes(fill = Attrition),stat="identity")
+          
+
+```
+
+
+```{r}
+# percentage of employees who quit
+
+employee %>% group_by (., Attrition) %>% 
+            summarise(., Percentage = n()/nrow(employee)) %>% 
+            ggplot(.,aes(x=Attrition,y=Percentage )) +
+            geom_bar(aes(fill=Attrition),stat="identity")
+```
+
+
+```{r}
+# Attrition count by Department
+
+employee %>%
+        filter(., Attrition == "Yes") %>% 
+        group_by(Department) %>% 
+        summarise(count = n()) %>% 
+        ggplot(., aes(x = reorder(Department,count), y = count)) + 
+        geom_bar(aes(fill = Department),stat = "identity") +
+        theme_bw()+
+        coord_flip()
+
+```
+
+
+
+
+```{r}
+# Attrition count by JobRole
+
+employee %>% filter(., Attrition == "Yes") %>% 
+ group_by(JobRole) %>% 
+        summarise(count = n()) %>% 
+        ggplot(., aes(x = reorder(JobRole,count), y = count)) + 
+        geom_bar(aes(fill= JobRole),stat = "identity") +
+        theme_bw()+
+        coord_flip()
+
+```
+```{r}
+# Attrition count by JobLevel
+
+employee %>% filter(., Attrition == "Yes") %>% 
+group_by(JobLevel) %>% 
+        summarise(count = n()) %>% 
+        ggplot(., aes(x = reorder(JobLevel,count), y = count)) + 
+        geom_bar(aes(fill = JobLevel),stat = "identity") +
+        theme_bw()+
+        coord_flip()
+
+
+```
+
+
+```{r}
+# Attrition count by Age
+
+employee %>% filter(., Attrition == "Yes") %>% 
+             group_by(Age) %>% 
+            summarise(count=n()) %>% 
+            ggplot(.,aes(x=Age , y= count)) + 
+            scale_fill_brewer(palette="Set1")+
+            geom_bar(aes(fill= Age),stat ="identity") +
+            coord_flip()
+
+```
+```{r}
+# Attrition count by Gender
+
+employee %>% filter(., Attrition == "Yes") %>% 
+             group_by(Gender) %>% 
+            summarise(count=n()) %>% 
+            ggplot(.,aes(x=Gender, y= count)) + 
+            scale_fill_brewer(palette="Set1") +
+            geom_bar(aes(fill = Gender),stat ="identity") +
+            coord_flip()
+```
+
+                      
+
+
+```{r}
+who_leaving = employee %>% select(.,Gender,Age,JobLevel,JobRole,
+                                  Department,  Attrition)
+
+```
+
+
+```{r}
+head(who_leaving)
+```
+
+
+```{r}
+# Attrition analysis
+# Attrition and job satisfaction
+
+att_vs_jobsat = employee  %>% group_by(Attrition) %>% summarize(Mean = round(mean(JobSatisfaction), 2))
+att_vs_jobsat
+```
+
+
+
+
+
+```{r}
+# Attrition and job Satisfaction
+
+ggplot(att_vs_jobsat,aes(x= Attrition, y = Mean,color= Attrition,
+                         fill= Attrition)) +
+  scale_fill_brewer(palette="Set2") +
+  geom_bar(stat = "identity") + 
+  ggtitle("Attrition and Job Satisfaction") +
+  theme(plot.title = element_text(face = "bold", hjust = 0.7, size = 15))+
+  labs(x = "Attrition", y = " Avg Job Satisfaction")
+```
+
+
+```{r}
+# Attrition and distance from work
+
+ggplot(employee, aes(x=DistanceFromHome, fill=Attrition, 
+                     color=Attrition)) +
+geom_density(position="identity", alpha=0.5) +
+theme_bw() + 
+scale_fill_brewer(palette="Set2") +
+ggtitle("Attrition and Distance from work") + 
+theme(plot.title = element_text(face = "bold", hjust = 0.4, size = 15),    legend.position="bottom") +
+labs(x = "Distance from Work")
+```
+
+
+
+
+
+```{r}
+# Attrition and business Travel
+
+employee %>%
+  group_by(BusinessTravel) %>%
+  tally() %>%
+  ggplot(aes(x = BusinessTravel, y = n,fill=BusinessTravel)) +
+  geom_bar(stat = "identity") +
+  theme_bw()+
+  labs(x="Business Travel", y="Number Attriation")+
+  ggtitle("Attrition and Business Travel")+
+  theme(plot.title = element_text(face = "bold", hjust = 0.4, size = 15))
+```
+
+
+```{r}
+# Attrition and monthly income
+
+employee %>% group_by(Attrition) %>% 
+  summarise(., median_income= median(MonthlyIncome))
+```
+
+
+```{r}
+# Attrition and monthly income
+
+ggplot(employee,aes(x= Attrition, y= MonthlyIncome,fill= Attrition)) +
+  theme_bw()+
+  geom_boxplot(alpha=0.3)+
+  ggtitle("Attrition and MonthlyIncome")+
+  #theme(plot.title = element_text(hjust = 0.5))+
+  theme(plot.title = element_text(face = "bold", hjust = 0.4, size = 15))+
+        geom_boxplot()
+```
+
+
+
+
+```{r}
+employee %>% group_by(.,Attrition,Department) %>% 
+         summarise(avg_mon_income= mean(MonthlyIncome)) %>% 
+  ggplot(., aes(x=reorder(Attrition,avg_mon_income),y= avg_mon_income,fill=Department))+
+  geom_bar(stat="identity",position="dodge")
+```
+
+
+```{r}
+employee %>% filter(.,Attrition == "Yes") %>% 
+  group_by(JobSatisfaction) %>% 
+  summarise(., avg_monthly_income= mean(MonthlyIncome)) %>% 
+  ggplot(.,aes(x=JobSatisfaction,y= avg_monthly_income,
+               fill= JobSatisfaction)) + geom_bar(stat="identity")
+
+```
+
+
+
+
+
+
