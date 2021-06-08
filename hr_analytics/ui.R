@@ -77,7 +77,23 @@ dashboardPage(
                   
                 )
               )
-              ))
+              ),
+      tabItem(tabName = "conclusion",
+              fluidRow(
+                h3(tags$b("Conclusion")),
+                p("1.	The Attrition level of employees with low job satisfaction is higher"),
+                p("2.	Distance from home is a key influencer to Attrition"),
+                p("3.	Low income levels are a possible cause of  attrition in an organization
+"),
+                br(),
+                br(),
+                h3(tags$b("Prevention practices")),
+                p("Following interventions can have positive impact on employee retention:"),
+                p("Providing job-specific training and development opportunities for employees"),
+                p("Offering rewards such as base pay, variable or incentive pay and benefits"),
+                p("Training supervisors and managers how to lead and how to develop effective relationships with subordinates ")
+              )))
+      
       
   )
 )
